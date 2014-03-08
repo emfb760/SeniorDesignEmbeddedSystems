@@ -1,0 +1,2 @@
+#Bat Bracelet
+This embedded systems was design to assist the visually impaired by giving the wearer sensory information of the world around them. The bracelet is designed with a ultrasonic sensor for measuring distance to objects and a vibration motor to give the wearer understandable feedback of the distance calculated.
