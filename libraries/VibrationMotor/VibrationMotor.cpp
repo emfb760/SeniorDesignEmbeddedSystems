@@ -61,39 +61,34 @@ int VibrationMotor::getVibrationTime() const {
 }
 
 void VibrationMotor::pulse() {
-	if( speed < maxGranularity ) {	// Only vibrate when the reading is within a certain range
+	if( speed == 0 ) {					// If speed is zero, vibrate continuously
+		digitalWrite(pinOut,HIGH);
+		if( pinLED != -1 ) {
+			digitalWrite(pinLED, HIGH);
+		}
+		delay(200);
+	}
+	else if( speed < maxGranularity ) {	// When the reading is within the granularity range and greater than zero
 		int time = 0;
-		while( time < vibrationTime ) {	// This timing condition allows the user to simulate a delay between a change in speed
-			if( speed <= 0 ) {				// Continuously vibrate
-				digitalWrite(pinOut,HIGH);
-				if( pinLED != -1 ) {
-					digitalWrite(pinLED,HIGH);
-				}
-				
-				delay(vibrationTime);
-				
-				time += (vibrationTime == 0) ? 1 : vibrationTime;	// if vibrationTime is zero, add one so that we can exit the loop in next iteration
+		while( time <= vibrationTime ) {	// This timing condition allows the user to simulate a delay between a change in speed
+			digitalWrite(pinOut,HIGH);
+			if( pinLED != -1 ) {
+				digitalWrite(pinLED,HIGH);
 			}
-			else {							// Vibrate at a pulse relative to the speed variable
-				digitalWrite(pinOut,HIGH);
-				if( pinLED != -1 ) {
-					digitalWrite(pinLED,HIGH);
-				}
 				
-				delay(DELTA*speed);
+			delay(DELTA*speed);
 				
-				digitalWrite(pinOut,LOW);
-				if( pinLED != -1 ) {
-					digitalWrite(pinLED,LOW);
-				}
-				
-				delay(DELTA*speed);
-				
-				time += 2*DELTA*speed;
+			digitalWrite(pinOut,LOW);
+			if( pinLED != -1 ) {
+				digitalWrite(pinLED,LOW);
 			}
+				
+			delay(DELTA*speed);
+				
+			time += 2*DELTA*speed;
 		}
 	}
-	else {
+	else {								// Out of range
 		digitalWrite(pinOut,LOW);
 		if( pinLED != -1 ) {
 			digitalWrite(pinLED,LOW);

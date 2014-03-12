@@ -17,7 +17,8 @@
 #define speakerPIN 9   // Arduino Pin connected to the speaker 
 #define tempo 10000    // Tempo to play notes on the speaker
 
-#define modePin 7      // Arduino Pin connected to switch to allow user to toggle between object finding mode and way finding mode
+#define modePin 6      // Arduino Pin connected to switch to allow user to toggle between object finding mode and way finding mode
+#define modeLED 7      // Arduino Pin connected to LED to display the current mode
 
 // Initialize objects used in the system (i.e. sonar sensor, vibration motor, and speaker)
 SonarSensor s(triggerPIN,echoPIN);
@@ -53,7 +54,8 @@ void setup() {
   Serial.println("Played G3");
 #endif  
   
-  pinMode(modePin,INPUT);  // Set mode pin to be an input pin
+  pinMode(modePin,INPUT_PULLUP);  // Set mode pin to be an input pin
+  pinMode(modeLED,OUTPUT);  // Set mode LED pin to be an output pin
   
   delay(100);
 }
@@ -67,13 +69,17 @@ void loop()
   s.printMeasurements();
 #endif
 
-  if( digitalRead(modePin) ) {  // Check if the switch is set to way finding mode
+  if( digitalRead(modePin) == LOW ) {  // Check if the switch is set to way finding mode
     // Set the speed of the vibration motor given the distance calculate converted to 6 inch increments
     vm.setSpeed(s.getInchIncrement(6));
+    
+    digitalWrite(modeLED,HIGH);
   }
   else {
     // Set the speed of the vibration motor given the distance calculated converted to inches
     vm.setSpeed(s.getInches());
+    
+    digitalWrite(modeLED,LOW);
   }
   
   // Pulse the vibration motor
