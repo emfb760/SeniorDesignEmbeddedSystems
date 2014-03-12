@@ -71,7 +71,7 @@ void loop()
 
   if( digitalRead(modePin) == LOW ) {  // Check if the switch is set to way finding mode
     // Set the speed of the vibration motor given the distance calculate converted to 6 inch increments
-    vm.setSpeed(s.getInchIncrement(6));
+    vm.setSpeed(s.getInchIncrement(12));
     
     digitalWrite(modeLED,HIGH);
   }
