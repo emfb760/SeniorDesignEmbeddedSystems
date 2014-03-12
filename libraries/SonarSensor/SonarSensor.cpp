@@ -60,6 +60,10 @@ long SonarSensor::getInches() const {
 	return uSToInches();
 }
 
+long SonarSensor::getInchIncrement(int increment) const {
+	return (long)(uSToInches()/increment);
+}
+
 long SonarSensor::getCentimeters() const {
 	return uSToCentimeters();
 }
